@@ -1,7 +1,14 @@
 # Unsupervised-ML_showcase_ClimateWins :earth_asia:
-***A use experiment of unsupervised classification algorithms (Random forest, CNN, RNN, GANs)***
+***A use experiment of unsupervised classification algorithms (Random forest, CNN, RNN)***
 
 ## 1. Context
+This next round of analysis needed to be a good technical base to create some thought experiments with the goal of using machine learning algorithms for categorizing and predicting weather in mainland Europe.
+In this iteration, ClimateWins has a few areas it wants to cover:
+- Finding new patterns in weather changes over the last 60 years.
+- Identifying weather patterns outside the regional norm in Europe.
+- Determining whether unusual weather patterns are increasing.
+- Generating possibilities for future weather conditions over the next 25 to 50 years based on current trends.
+- Determining the safest places for people to live in Europe within the next 25 to 50 years.
 
 
 ## 2. Data set & tools
@@ -24,25 +31,29 @@ The main tool used for this study is Python using the [Jupyter notebook](https:/
 
 ## 3. Analysis (python scripts for each step)
 
-[**a. Hierarchical clustering on all the 15 stations:**](Scripts/6.1_Dendograms_on_stations.ipynb) 
+[**a. Hierarchical clustering on all the 15 stations:**](Scripts/6.1_Dendograms_on_stations.ipynb) The main goal of using a hierarchical clustering algorithm on the weather dataset was to see if there were some common patterns that could match the tags for pleasant or unpleasant days. Since the data is quite large, running the model on the whole set didn't bring much clarity. Isolating the weather stations were a bit more helpfull as seen on this dendogram:
+![dendoram of basel, single method](Visualizations/dendrogram_BASEL_single.png)
 
-[**b. Hierarchical clustering on PCA reduction:**](Scripts/6.2_Dendograms_on_PCA.ipynb) 
+[**b. Hierarchical clustering on PCA reduction:**](Scripts/6.2_Dendograms_on_PCA.ipynb) The Principal Component Analysis had to simplify the variables, allowing a reduction from 167 to 15 (one for each weather station). It's results were not very conclusive and didn't bring more clarity.
 
-[**c. Recurrent Neural Network (RNN):**](Scripts/7_RNN_LSTM.ipynb) 
+[**c. Recurrent Neural Network (RNN):**](Scripts/7_RNN_LSTM.ipynb) Since there is a temporal dimension to the data, RNNs and particularly Long Short-Term Memory (LSTM) networks, are well-suited for handling sequential data and capturing temporal dependencies. On this first attempt with some educated iterations, the model kept being very bad at predicting weather the weather metrics are from a station or another. Maybe there is a bias held inside the seasonality of the weather, since a summer day form the north might look like a fall day from the south.
 
-[**d. Random Forest:**](Scripts/8_Random_Forests.ipynb) 
+[**d. Random Forest:**](Scripts/8_Random_Forests.ipynb) The Random Forest algorithm demonstrated strong performance in classifying pleasant days based on weather data. When trained on data from all weather stations over a span of 10 years, the model achieved an accuracy of approximately 80%. This indicates that the model is effective in capturing the patterns and relationships in the weather data that contribute to pleasant days.
 
-[**e. Random Forest Optimization:**](Scripts/9_Random_Forest_optimization.ipynb) 
+![two decision trees from the first global random forest](Visualizations/random_forest_trees.png)
 
-[**f. RNN Optimization:**](Scripts/10_RNN_LSTM_optimized.ipynb)
-
-[**g. Convolutional Neural Network (CNN) on weather images :**](Scripts/12_Visual_Weather_Systems_CNN.ipynb)
-
-
+[**e. Random Forest Optimization:**](Scripts/9_Random_Forest_optimization.ipynb) For optimizing the random forest, a grid search and a random search were used. The optimized global accuracy on all stations (limited to a 10 years span) is equivalent at about 80%. The optimized random forest mostly modified the importance of the weather stations and the weather observations. While the accuracy is similar, the underlying weather observations had a slight difference, having the precipitations more important than the temperatures.
+![Importance score by weather observation](Visualizations/feature_importances_BUDAPEST.png)
 
 
+[**f. RNN Optimization:**](Scripts/10_RNN_LSTM_optimized.ipynb) This optimization was done with a Bayesian search that took a very long time to run: we achieved an impressive accuracy of 0.91 on the training data. On the testing data, the model reached an accuracy of 0.70 and a loss of 0.90, marking a significant improvement.
 
+![confusion matrix of the optimized RNN](Visualizations/cm_RNN_opt.png)
+The resulting confusion matrix, while showing improvement, still highlights certain limitations in recognizing the full range of weather stations. Specifically, some stations are consistently misclassified or underrepresented, indicating areas where the model struggles to differentiate between similar weather patterns.
 
+[**g. Convolutional Neural Network (CNN) on weather images :**](Scripts/12_Visual_Weather_Systems_CNN.ipynb) From Kaggler ([download link](https://storage.googleapis.com/kaggle-data-sets/799266/1371618/bundle/archive.zip?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=gcp-kaggle-com%40kaggle-161607.iam.gserviceaccount.com%2F20250110%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20250110T154453Z&X-Goog-Expires=259200&X-Goog-SignedHeaders=host&X-Goog-Signature=91d902c51b0779ccb0d39a6bd9fdc0111696b8a1456e4a474baf21018e6692a6deef0effe34c9d51fdef4fe71ff938a75ec263953f0366d9930d7c79e3faf7acd6010a237eb1b58740b3c21fd85cba9500281a178404e1132869aadd6de27a42c3f75eb789dfe9445f74cb79e05a161771d2ee582ad89fcec97b74bede2dc58cc4d714e23acb6950181fbf6b4ef2488b069ea015a184cfa38fd03dc1ad11a4ea8bd7f523ab410e3e099df3d5bfc4731bcecb0083f7b0ce9e712040088dd58b91746db01246bfb441390e679b4d190e77858895bb85d280c0ce87fc952e779088fea958ac1f06a8abd80bf34548805b6b8564e598058e24a59eccbf7ba494b6fd)), this collection of pictures is classified in 4 categories : cloudy, Rain, Shine and Sunrise. In order to test out the power of the CNN algorithm, I could run it to recognise each category. Although not perfect, it is still promissing for future analysis:
+
+![confusion matrix of the CNN](Visualizations/cm_weather_CNN.png)
 
 ## 4. Presentation
-[Power point presentation to stakeholders, with recommendations to ClimateWins](Interim_report/Findings_presentation.pdf)
+[Power point presentation to stakeholders, with recommendations to ClimateWins](Presentation/Presentation.pdf)
