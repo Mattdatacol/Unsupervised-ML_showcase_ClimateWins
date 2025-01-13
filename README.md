@@ -36,7 +36,7 @@ The main tool used for this study is Python using the [Jupyter notebook](https:/
 
 [**f. RNN Optimization:**](Scripts/10_RNN_LSTM_optimized.ipynb)
 
-[**g. Convolutional Neural Network (CNN) on weather images :**](Scripts/12_Visual_Weather_Systems CNN.ipynb)
+[**g. Convolutional Neural Network (CNN) on weather images :**](Scripts/12_Visual_Weather_Systems_CNN.ipynb)
 
 
 
